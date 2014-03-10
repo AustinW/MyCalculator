@@ -21,6 +21,10 @@
 		1E2B3CCE18C7A94700FA1DA0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E2B3CB018C7A94700FA1DA0 /* UIKit.framework */; };
 		1E2B3CD618C7A94700FA1DA0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E2B3CD418C7A94700FA1DA0 /* InfoPlist.strings */; };
 		1E2B3CD818C7A94700FA1DA0 /* MyCalculatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B3CD718C7A94700FA1DA0 /* MyCalculatorTests.m */; };
+		1E82C42F18CD0965009D087D /* ShuntingYard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E82C42E18CD0965009D087D /* ShuntingYard.m */; };
+		1E82C43918CD1354009D087D /* MJGStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E82C43818CD1354009D087D /* MJGStack.m */; };
+		1E82C43C18CD140E009D087D /* NSMutableArray+QueueAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E82C43B18CD140E009D087D /* NSMutableArray+QueueAdditions.m */; };
+		1ED1E04C18C7B9300052C728 /* CalculatorEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ED1E04B18C7B9300052C728 /* CalculatorEngine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,14 @@
 		1E2B3CD318C7A94700FA1DA0 /* MyCalculatorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MyCalculatorTests-Info.plist"; sourceTree = "<group>"; };
 		1E2B3CD518C7A94700FA1DA0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1E2B3CD718C7A94700FA1DA0 /* MyCalculatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCalculatorTests.m; sourceTree = "<group>"; };
+		1E82C42D18CD0965009D087D /* ShuntingYard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuntingYard.h; sourceTree = "<group>"; };
+		1E82C42E18CD0965009D087D /* ShuntingYard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuntingYard.m; sourceTree = "<group>"; };
+		1E82C43718CD1354009D087D /* MJGStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJGStack.h; sourceTree = "<group>"; };
+		1E82C43818CD1354009D087D /* MJGStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJGStack.m; sourceTree = "<group>"; };
+		1E82C43A18CD140E009D087D /* NSMutableArray+QueueAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueAdditions.h"; sourceTree = "<group>"; };
+		1E82C43B18CD140E009D087D /* NSMutableArray+QueueAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueAdditions.m"; sourceTree = "<group>"; };
+		1ED1E04A18C7B9300052C728 /* CalculatorEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorEngine.h; sourceTree = "<group>"; };
+		1ED1E04B18C7B9300052C728 /* CalculatorEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorEngine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +124,19 @@
 		1E2B3CB218C7A94700FA1DA0 /* MyCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				1E82C43718CD1354009D087D /* MJGStack.h */,
+				1E82C43818CD1354009D087D /* MJGStack.m */,
 				1E2B3CBB18C7A94700FA1DA0 /* MyCalculatorAppDelegate.h */,
 				1E2B3CBC18C7A94700FA1DA0 /* MyCalculatorAppDelegate.m */,
 				1E2B3CBE18C7A94700FA1DA0 /* Main.storyboard */,
+				1ED1E04A18C7B9300052C728 /* CalculatorEngine.h */,
+				1ED1E04B18C7B9300052C728 /* CalculatorEngine.m */,
 				1E2B3CC118C7A94700FA1DA0 /* MyCalculatorViewController.h */,
 				1E2B3CC218C7A94700FA1DA0 /* MyCalculatorViewController.m */,
+				1E82C42D18CD0965009D087D /* ShuntingYard.h */,
+				1E82C42E18CD0965009D087D /* ShuntingYard.m */,
+				1E82C43A18CD140E009D087D /* NSMutableArray+QueueAdditions.h */,
+				1E82C43B18CD140E009D087D /* NSMutableArray+QueueAdditions.m */,
 				1E2B3CC418C7A94700FA1DA0 /* Images.xcassets */,
 				1E2B3CB318C7A94700FA1DA0 /* Supporting Files */,
 			);
@@ -250,9 +270,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E82C42F18CD0965009D087D /* ShuntingYard.m in Sources */,
 				1E2B3CC318C7A94700FA1DA0 /* MyCalculatorViewController.m in Sources */,
+				1ED1E04C18C7B9300052C728 /* CalculatorEngine.m in Sources */,
 				1E2B3CBD18C7A94700FA1DA0 /* MyCalculatorAppDelegate.m in Sources */,
 				1E2B3CB918C7A94700FA1DA0 /* main.m in Sources */,
+				1E82C43918CD1354009D087D /* MJGStack.m in Sources */,
+				1E82C43C18CD140E009D087D /* NSMutableArray+QueueAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +485,7 @@
 				1E2B3CDD18C7A94700FA1DA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1E2B3CDE18C7A94700FA1DA0 /* Build configuration list for PBXNativeTarget "MyCalculatorTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +494,7 @@
 				1E2B3CE018C7A94700FA1DA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

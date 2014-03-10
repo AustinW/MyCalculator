@@ -13,6 +13,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    // Change status bar color to white
+    [[UIView appearance] setTintColor:[UIColor whiteColor]];
+    
     return YES;
 }
 							
