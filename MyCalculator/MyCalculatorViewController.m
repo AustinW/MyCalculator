@@ -72,8 +72,7 @@
 {
     [self pushOperand];
     
-    NSDecimalNumber *result = [self.engine calculate];
-    self.lblDisplay.text = [NSString stringWithFormat:@"%g", [result doubleValue]];
+    [self.engine.infixStack addObject:[self realOperator:sender.currentTitle]];
 }
 
 - (NSString *)realOperator:(NSString *)displayOperator
@@ -82,39 +81,6 @@
             *realOperators = @[@"%", @"sqrt", @"/", @"*", @"-", @"+", @"flip"];
     
     return [realOperators objectAtIndex:[operators indexOfObject:displayOperator]];
-}
-
-- (IBAction)calculatorButtonPressed:(UIButton *)sender {
-    
-//    NSArray *operators = @[@"%", @"√", @"÷", @"×", @"-", @"+", @"±"],
-//            *realOperators = @[@"%", @"sqrt", @"/", @"*", @"-", @"+", @"flip"],
-//            *operands  = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"0", @"."];
-//    
-//    if ([operators containsObject:[sender currentTitle]]) {
-//        [self.infixStack addObject:[self.lblDisplay text]];
-//        [self.infixStack addObject: [realOperators objectAtIndex:[operators indexOfObject:[sender currentTitle]]]];
-//        
-//        [self setDisplayStatus:ENTERING_OPERATORS];
-//        [self updateDisplayWith:[sender currentTitle]];
-//        
-//    } else if ([operands containsObject:[sender currentTitle]]) {
-//        
-//        [self updateDisplayWith:[sender currentTitle]];
-//        self.displayStatus = ENTERING_NUMBERS;
-//        
-//    } else if ([[sender currentTitle] isEqualToString:@"AC"]) {
-//        
-//        
-//    } else if ([[sender currentTitle] isEqualToString:@"="]) {
-//        
-//        [self.infixStack addObject:[self.lblDisplay text]];
-//        
-//        NSLog(@"infix stack: %@", self.infixStack);
-//        NSArray *postfix = [self.infixToPostfix shuntingYardWithTokens:self.infixStack];
-//        NSLog(@"Calculating...");
-//        NSLog(@"Postfix stack: %@", postfix);
-//        
-//    }
 }
 
 - (void)pushOperand
@@ -127,8 +93,26 @@
     self.hasEnteredDot = NO;
 }
 - (IBAction)calculate:(id)sender {
+    
+    [self pushOperand];
+    
     NSDecimalNumber *result = [self.engine calculate];
+    
+    self.lblDisplay.text = [result stringValue];
+    
     NSLog(@"Result: %@", result);
+}
+- (IBAction)performImmediateOperation:(UIButton *)sender {
+    NSString *operator = [self realOperator:sender.currentTitle];
+    NSDecimalNumber *currentNumber = [NSDecimalNumber decimalNumberWithString:self.lblDisplay.text];
+    
+    if ([operator isEqualToString:@"%"]) {
+        self.lblDisplay.text = [[currentNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"100"]] stringValue];
+    } else if ([operator isEqualToString:@"sqrt"]) {
+        self.lblDisplay.text = [[currentNumber decimalNumberByRaisingToPower:@0] stringValue];
+    } else if ([operator isEqualToString:@"flip"]) {
+        self.lblDisplay.text = [[currentNumber decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]] stringValue];
+    }
 }
 
 - (IBAction)clearPressed
@@ -138,7 +122,5 @@
     self.userIsEnteringANumber = NO;
     self.hasEnteredDot = NO;
 }
-
-
 
 @end

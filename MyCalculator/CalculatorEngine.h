@@ -12,7 +12,7 @@
 @interface CalculatorEngine : NSObject
 
 @property (strong, nonatomic) NSMutableArray *infixStack;
-@property (strong, nonatomic) ShuntingYard *infixToPostfix;
+@property (strong, nonatomic) ShuntingYard *shuntingYard;
 
 + (CalculatorEngine *) mainEngine;
 

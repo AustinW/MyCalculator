@@ -14,7 +14,7 @@ static CalculatorEngine* _mainEngine;
 
 @implementation CalculatorEngine
 
-@synthesize infixToPostfix = _infixToPostfix;
+@synthesize shuntingYard = _shuntingYard;
 @synthesize infixStack = _infixStack;
 
 + (CalculatorEngine *) mainEngine
@@ -26,7 +26,7 @@ static CalculatorEngine* _mainEngine;
 	return _mainEngine;
 }
 
-- (ShuntingYard *)infixToPostfix
+- (ShuntingYard *)shuntingYard
 {
     NSDictionary *tokens = @{
                              @"+": @{@"precedence": @0, @"associativity": @"left"},
@@ -36,19 +36,29 @@ static CalculatorEngine* _mainEngine;
                              @"%": @{@"precedence": @1, @"associativity": @"left"},
                              };
     
-    if ( ! _infixToPostfix) {
-        _infixToPostfix = [[ShuntingYard alloc] initWithOperators:tokens];
+    if ( ! _shuntingYard) {
+        _shuntingYard = [[ShuntingYard alloc] initWithOperators:tokens];
     }
     
-    return _infixToPostfix;
+    return _shuntingYard;
+}
+
+- (NSMutableArray *)infixStack
+{
+    if (_infixStack == nil) {
+        _infixStack = [[NSMutableArray alloc] init];
+    }
+    
+    return _infixStack;
 }
 
 - (NSDecimalNumber *)calculate
 {
     MJGStack *tempStack = [[MJGStack alloc] init];
-    NSArray *tokens = [self.infixToPostfix shuntingYardWithTokens:self.infixStack];
+    NSArray *tokens = [self.shuntingYard shuntingYardWithTokens:self.infixStack];
     
-    NSLog(@"Tokens: %@", tokens);
+    NSLog(@"Infix stack: %@", self.infixStack);
+    NSLog(@"Postfix stack: %@", tokens);
     NSDecimalNumber *x, *y;
     
     for (id operation in tokens) {
@@ -69,7 +79,7 @@ static CalculatorEngine* _mainEngine;
                 x = [tempStack popObject];
                 y = [tempStack popObject];
                 
-                [tempStack pushObject:[x decimalNumberBySubtracting:y]];
+                [tempStack pushObject:[y decimalNumberBySubtracting:x]];
             } else if ([operation isEqualToString:@"*"]) {
                 x = [tempStack popObject];
                 y = [tempStack popObject];
@@ -89,7 +99,10 @@ static CalculatorEngine* _mainEngine;
         }
     }
     
-    return [tempStack peekObject];
+    [self clearStack];
+    [self.infixStack addObject:[tempStack popObject]];
+    
+    return [self.infixStack firstObject];
 }
 
 // From: http://stackoverflow.com/a/3474311/410166
@@ -101,7 +114,8 @@ static CalculatorEngine* _mainEngine;
 
 - (void)clearStack
 {
-    
+    [self.infixStack removeAllObjects];
+    [self.shuntingYard reset];
 }
 
 @end

@@ -55,7 +55,7 @@
     
     for (NSString *token in tokens) {
         
-        if ([ShuntingYard stringIsNumeric:token]) {
+        if ([token isKindOfClass:[NSDecimalNumber class]] || ([token isKindOfClass:[NSString class]] && [ShuntingYard stringIsNumeric:token])) {
             
             [self.output enqueue:token];
 
