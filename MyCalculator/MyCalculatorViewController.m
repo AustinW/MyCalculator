@@ -41,9 +41,6 @@
     // Change status bar to white color
     [self setNeedsStatusBarAppearanceUpdate];
     
-    
-    self.displayStatus = ENTERED;
-    
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle{
@@ -73,6 +70,7 @@
     [self pushOperand];
     
     [self.engine.infixStack addObject:[self realOperator:sender.currentTitle]];
+    self.lblOperatorDisplay.text = sender.currentTitle;
 }
 
 - (NSString *)realOperator:(NSString *)displayOperator
@@ -96,22 +94,34 @@
     
     [self pushOperand];
     
+    self.lblOperatorDisplay.text = @"=";
+    
     NSDecimalNumber *result = [self.engine calculate];
     
     self.lblDisplay.text = [result stringValue];
     
     NSLog(@"Result: %@", result);
+    
+    self.userIsEnteringANumber = NO;
 }
 - (IBAction)performImmediateOperation:(UIButton *)sender {
     NSString *operator = [self realOperator:sender.currentTitle];
     NSDecimalNumber *currentNumber = [NSDecimalNumber decimalNumberWithString:self.lblDisplay.text];
     
     if ([operator isEqualToString:@"%"]) {
-        self.lblDisplay.text = [[currentNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"100"]] stringValue];
+        currentNumber = [currentNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"100"]];
     } else if ([operator isEqualToString:@"sqrt"]) {
-        self.lblDisplay.text = [[currentNumber decimalNumberByRaisingToPower:@0] stringValue];
+        currentNumber = [currentNumber decimalNumberByRaisingToPower:@0];
     } else if ([operator isEqualToString:@"flip"]) {
-        self.lblDisplay.text = [[currentNumber decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]] stringValue];
+        currentNumber = [currentNumber decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
+    }
+    
+    self.lblDisplay.text = [currentNumber stringValue];
+    
+    // If the user is not entering a number, need to modify the value on the stack
+    if ( ! self.userIsEnteringANumber) {
+        [self.engine clearStack];
+        [self.engine.infixStack addObject:currentNumber];
     }
 }
 

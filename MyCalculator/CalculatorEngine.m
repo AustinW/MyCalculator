@@ -99,17 +99,16 @@ static CalculatorEngine* _mainEngine;
         }
     }
     
+    // Clear the whole stack
     [self clearStack];
-    [self.infixStack addObject:[tempStack popObject]];
     
-    return [self.infixStack firstObject];
-}
-
-// From: http://stackoverflow.com/a/3474311/410166
-+ (BOOL) stringIsNumeric:(NSString *)str {
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    NSNumber *number = [formatter numberFromString:str];
-    return !!number; // If the string is not numeric, number will be nil
+    NSDecimalNumber *result = [tempStack popObject];
+    
+    // Add only the resulting number back to the infix stack
+    [self.infixStack addObject:result];
+    
+    // Return the top of the infix stack (result)
+    return result;
 }
 
 - (void)clearStack
