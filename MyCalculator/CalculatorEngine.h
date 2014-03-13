@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShuntingYard.h"
 
 @interface CalculatorEngine : NSObject
+
+@property (strong, nonatomic) NSMutableArray *infixStack;
+@property (strong, nonatomic) ShuntingYard *infixToPostfix;
+
 + (CalculatorEngine *) mainEngine;
+
+- (NSDecimalNumber *)calculate;
+- (void)clearStack;
+
 @end

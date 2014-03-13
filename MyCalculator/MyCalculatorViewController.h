@@ -7,7 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CalculatorEngine.h"
+
+typedef enum DisplayStatus : NSUInteger {
+    ENTERING_NUMBERS,
+    ENTERING_OPERATORS,
+    ENTERED
+} DisplayStatus;
 
 @interface MyCalculatorViewController : UIViewController
+
+@property (strong, nonatomic) CalculatorEngine *engine;
+@property enum DisplayStatus displayStatus;
 
 @end

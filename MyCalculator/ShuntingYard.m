@@ -107,6 +107,12 @@
     return self.output;
 }
 
+- (void) reset
+{
+    _stack = nil;
+    _output = nil;
+}
+
 - (BOOL) hasOperator
 {
     NSString *top = [self.stack peekObject];
@@ -126,7 +132,7 @@
 }
 
 // From: http://stackoverflow.com/a/3474311/410166
-+ (BOOL) stringIsNumeric:(NSString *) str {
++ (BOOL) stringIsNumeric:(NSString *)str {
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     NSNumber *number = [formatter numberFromString:str];
     return !!number; // If the string is not numeric, number will be nil

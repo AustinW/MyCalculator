@@ -16,7 +16,10 @@
 @property (nonatomic) NSMutableArray *output;
 @property NSDictionary *operators;
 
++ (BOOL) stringIsNumeric:(NSString *)str;
+
 - (id) initWithOperators:(NSDictionary *)operators;
 - (NSArray *) shuntingYardWithTokens:(NSArray *)tokens;
+- (void) reset;
 
 @end
