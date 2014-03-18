@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E0CD2D818D26AD5008AFC7B /* NSDecimalNumber+SquareRoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E0CD2D718D26AD5008AFC7B /* NSDecimalNumber+SquareRoot.m */; };
+		1E25038618D80587000402E4 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1E25038518D80587000402E4 /* README.txt */; };
 		1E2B3CAD18C7A94600FA1DA0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E2B3CAC18C7A94600FA1DA0 /* Foundation.framework */; };
 		1E2B3CAF18C7A94700FA1DA0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E2B3CAE18C7A94700FA1DA0 /* CoreGraphics.framework */; };
 		1E2B3CB118C7A94700FA1DA0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E2B3CB018C7A94700FA1DA0 /* UIKit.framework */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		1E0CD2D618D26AD5008AFC7B /* NSDecimalNumber+SquareRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+SquareRoot.h"; sourceTree = "<group>"; };
 		1E0CD2D718D26AD5008AFC7B /* NSDecimalNumber+SquareRoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDecimalNumber+SquareRoot.m"; sourceTree = "<group>"; };
+		1E25038518D80587000402E4 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		1E2B3CA918C7A94600FA1DA0 /* MyCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E2B3CAC18C7A94600FA1DA0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1E2B3CAE18C7A94700FA1DA0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -145,6 +147,7 @@
 				1E0CD2D718D26AD5008AFC7B /* NSDecimalNumber+SquareRoot.m */,
 				1E82C42D18CD0965009D087D /* ShuntingYard.h */,
 				1E82C42E18CD0965009D087D /* ShuntingYard.m */,
+				1E25038518D80587000402E4 /* README.txt */,
 				1E82C43A18CD140E009D087D /* NSMutableArray+QueueAdditions.h */,
 				1E82C43B18CD140E009D087D /* NSMutableArray+QueueAdditions.m */,
 				1E2B3CC418C7A94700FA1DA0 /* Images.xcassets */,
@@ -261,6 +264,7 @@
 			files = (
 				1E2B3CC518C7A94700FA1DA0 /* Images.xcassets in Resources */,
 				1E2B3CB718C7A94700FA1DA0 /* InfoPlist.strings in Resources */,
+				1E25038618D80587000402E4 /* README.txt in Resources */,
 				1E2B3CC018C7A94700FA1DA0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

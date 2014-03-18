@@ -71,11 +71,12 @@
                 // Queue the token at the top of the stack
                 [self.output enqueue:[self.stack popObject]];
             }
-
+            
+            // Push o1 onto the stack
             [self.stack pushObject:o1];
             
         } else if ([token isEqualToString:@"("]) {
-            
+        
             [self.stack pushObject:token];
  
         } else if ([token isEqualToString:@")"]) {
@@ -125,6 +126,8 @@
 
 - (BOOL) o1:(NSString *)o1 hasLowerPrecedenceThan:(NSString *)o2
 {
+    // Check if o1 has lower precedence than o2. See the instantiation of this object for
+    // a visual of the precedence dictionary
     NSDictionary *op1 = [self.operators objectForKey:o1],
     *op2 = [self.operators objectForKey:o2];
     
