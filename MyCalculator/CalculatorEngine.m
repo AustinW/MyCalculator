@@ -10,7 +10,7 @@
 #import "ShuntingYard.h"
 #import "MJGStack.h"
 
-static CalculatorEngine* _mainEngine;
+static CalculatorEngine *_mainEngine;
 
 @implementation CalculatorEngine
 
@@ -28,6 +28,7 @@ static CalculatorEngine* _mainEngine;
 
 - (ShuntingYard *)shuntingYard
 {
+    // Define operators
     NSDictionary *tokens = @{
                              @"+": @{@"precedence": @0, @"associativity": @"left"},
                              @"-": @{@"precedence": @0, @"associativity": @"left"},
@@ -55,6 +56,8 @@ static CalculatorEngine* _mainEngine;
 - (NSDecimalNumber *)calculate
 {
     MJGStack *tempStack = [[MJGStack alloc] init];
+    
+    // Pass the infix stack to the shunting yard and receive back a postfix stack of tokens
     NSArray *tokens = [self.shuntingYard shuntingYardWithTokens:self.infixStack];
     
     NSLog(@"Infix stack: %@", self.infixStack);
@@ -64,11 +67,12 @@ static CalculatorEngine* _mainEngine;
     for (id operation in tokens) {
         
         if ([operation isKindOfClass:[NSDecimalNumber class]]) {
-            // Number
+            // operation is a number, push the token onto the stack
             [tempStack pushObject:operation];
             continue;
         }
         
+        // operation is an operator, pop some tokens and perform the operation
         if ([operation isKindOfClass:[NSString class]]) {
             if ([operation isEqualToString:@"+"]) {
                 x = [tempStack popObject];

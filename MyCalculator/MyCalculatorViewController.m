@@ -78,19 +78,13 @@ const int MAX_DISPLAY_LENGTH = 12;
 {
     [self checkForErrorScreen];
     
-    // If the item on top of the infix stack is an operator, replace it with
-    // the operator that was pressed
-    if ([[self.engine.infixStack lastObject] isKindOfClass:[NSString class]]) {
-        [self.engine.infixStack removeLastObject];
-    
-    // Otherwise just push the operand
-    } else {
-        [self pushOperand];
-    }
+    [self pushOperand];
     
     // Add the operator to the infix stack
     [self.engine.infixStack addObject:[self realOperator:sender.currentTitle]];
     self.lblOperatorDisplay.text = sender.currentTitle;
+    
+    self.userIsEnteringANumber = NO;
 }
 
 // Map the unicode operators (used for display) to traditional operators

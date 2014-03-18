@@ -57,15 +57,18 @@
         
         if ([token isKindOfClass:[NSDecimalNumber class]] || ([token isKindOfClass:[NSString class]] && [ShuntingYard stringIsNumeric:token])) {
             
+            // Push the token into the output queue if it is of type NSDecimalNumber or a numeric string
             [self.output enqueue:token];
-
+        
+        // If the token is an operator
         } else if ([self.operators objectForKey:token]) {
             
             NSString *o1 = token;
             NSString *o2 = [self.stack peekObject];
             
-            while ([self hasOperator] && o2 && [self o1:o1 hasLowerPrecedenceThan:o2]) {
-                
+            // If the top of the stack has an operator and o1 has lower precedence than o2
+            while ([self hasOperator] && [self o1:o1 hasLowerPrecedenceThan:o2]) {
+                // Queue the token at the top of the stack
                 [self.output enqueue:[self.stack popObject]];
             }
 
