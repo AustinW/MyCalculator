@@ -9,10 +9,12 @@
 #import "MyCalculatorViewController.h"
 #import "ShuntingYard.h"
 #import "CalculatorEngine.h"
+#import "NSDecimalNumber+SquareRoot.h"
 
 @interface MyCalculatorViewController ()
 @property (nonatomic) BOOL userIsEnteringANumber;
 @property (nonatomic) BOOL hasEnteredDot;
+@property (nonatomic) BOOL displayNeedsClearingPrior;
 
 @property (strong, nonatomic) IBOutlet UILabel *lblDisplay;
 @property (strong, nonatomic) IBOutlet UILabel *lblOperatorDisplay;
@@ -23,6 +25,8 @@
 
 @synthesize lblDisplay;
 @synthesize engine;
+
+const int MAX_DISPLAY_LENGTH = 12;
 
 - (CalculatorEngine *)engine
 {
@@ -49,12 +53,17 @@
 
 #pragma mark Calculator Buttons
 - (IBAction)digitPressed:(UIButton *)sender {
+    
+    [self checkForErrorScreen];
+    
     NSString *digit = sender.currentTitle;
     
+    // If the user is entering a number, append the digit (max 12 chars)
     if (self.userIsEnteringANumber) {
-        if ( ! [sender.currentTitle isEqualToString:@"."] || ! self.hasEnteredDot) {
+        if ([self.lblDisplay.text length] <= MAX_DISPLAY_LENGTH && ( ! [sender.currentTitle isEqualToString:@"."] || ! self.hasEnteredDot)) {
             self.lblDisplay.text = [self.lblDisplay.text stringByAppendingString:digit];
         }
+    // Otherwise just set the display to the digit
     } else {
         self.lblDisplay.text = digit;
         self.userIsEnteringANumber = YES;
@@ -67,56 +76,114 @@
 
 - (IBAction)operationPressed:(UIButton *)sender
 {
-    [self pushOperand];
+    [self checkForErrorScreen];
     
+    // If the item on top of the infix stack is an operator, replace it with
+    // the operator that was pressed
+    if ([[self.engine.infixStack lastObject] isKindOfClass:[NSString class]]) {
+        [self.engine.infixStack removeLastObject];
+    
+    // Otherwise just push the operand
+    } else {
+        [self pushOperand];
+    }
+    
+    // Add the operator to the infix stack
     [self.engine.infixStack addObject:[self realOperator:sender.currentTitle]];
     self.lblOperatorDisplay.text = sender.currentTitle;
 }
 
+// Map the unicode operators (used for display) to traditional operators
 - (NSString *)realOperator:(NSString *)displayOperator
 {
-    NSArray *operators = @[@"%", @"√", @"÷", @"×", @"-", @"+", @"±"],
-            *realOperators = @[@"%", @"sqrt", @"/", @"*", @"-", @"+", @"flip"];
+    NSDictionary *operators = @{
+                                @"%": @"%",
+                                @"√": @"sqrt",
+                                @"÷": @"/",
+                                @"×": @"*",
+                                @"-": @"-",
+                                @"+": @"+",
+                                @"±": @"flip"
+                                };
     
-    return [realOperators objectAtIndex:[operators indexOfObject:displayOperator]];
+    return [operators objectForKey:displayOperator];
 }
 
 - (void)pushOperand
 {
-    if (self.userIsEnteringANumber) {
-        [self.engine.infixStack addObject:[NSDecimalNumber numberWithDouble:[self.lblDisplay.text doubleValue]]];
-        self.userIsEnteringANumber = NO;
-    }
+    // Convert the display to an NSDecimalNumber and push to the infix stack
+    [self.engine.infixStack addObject:[NSDecimalNumber numberWithDouble:[self.lblDisplay.text doubleValue]]];
     
-    self.hasEnteredDot = NO;
+    // User is no longer entering a number and has not entered a dot (next digit pressed is part
+    // of a new number)
+    self.userIsEnteringANumber = NO;
+    self.hasEnteredDot         = NO;
 }
-- (IBAction)calculate:(id)sender {
+
+- (IBAction)calculate:(id)sender
+{
+    [self checkForErrorScreen];
     
+    // Push the last operand that was entered
     [self pushOperand];
     
     self.lblOperatorDisplay.text = @"=";
     
-    NSDecimalNumber *result = [self.engine calculate];
-    
-    self.lblDisplay.text = [result stringValue];
-    
-    NSLog(@"Result: %@", result);
-    
+    @try {
+        // Get the result from the calculator engine
+        NSDecimalNumber *result = [self.engine calculate];
+        
+        // Display the result as a formatted number
+        self.lblDisplay.text = [MyCalculatorViewController formatNumber:result];
+        
+        NSLog(@"Result: %@", result);
+    }
+    @catch (NSException *exception) {
+        // Catch any calculator errors (such as division by zero)
+        self.lblDisplay.text = @"ERROR";
+        self.displayNeedsClearingPrior = YES;
+        
+    }
+
     self.userIsEnteringANumber = NO;
 }
+
++ (NSString *)formatNumber:(NSDecimalNumber *)number
+{
+    // Format the number to decimal style with a max display length
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    
+    // Try to format the number in a display friendly manner
+    if ([number compare:@10000000000] == NSOrderedDescending) {
+        [formatter setNumberStyle:NSNumberFormatterScientificStyle];
+    } else {
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    }
+    
+    [formatter setMaximumFractionDigits:MAX_DISPLAY_LENGTH];
+    [formatter setMaximumIntegerDigits:MAX_DISPLAY_LENGTH];
+    [formatter setGroupingSeparator:@""];
+    return [formatter stringFromNumber:number];
+}
+
+// Perform a unary operator
 - (IBAction)performImmediateOperation:(UIButton *)sender {
+    
+    [self checkForErrorScreen];
+    
     NSString *operator = [self realOperator:sender.currentTitle];
     NSDecimalNumber *currentNumber = [NSDecimalNumber decimalNumberWithString:self.lblDisplay.text];
     
+    // Perform the operation on the number
     if ([operator isEqualToString:@"%"]) {
         currentNumber = [currentNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"100"]];
     } else if ([operator isEqualToString:@"sqrt"]) {
-        currentNumber = [currentNumber decimalNumberByRaisingToPower:@0];
+        currentNumber = [currentNumber squareRoot];
     } else if ([operator isEqualToString:@"flip"]) {
         currentNumber = [currentNumber decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"-1"]];
     }
     
-    self.lblDisplay.text = [currentNumber stringValue];
+    self.lblDisplay.text = [MyCalculatorViewController formatNumber:currentNumber];
     
     // If the user is not entering a number, need to modify the value on the stack
     if ( ! self.userIsEnteringANumber) {
@@ -129,8 +196,18 @@
 {
     [self.engine clearStack];
     self.lblDisplay.text = @"0";
+    self.lblOperatorDisplay.text = @"";
     self.userIsEnteringANumber = NO;
     self.hasEnteredDot = NO;
+}
+
+- (void)checkForErrorScreen
+{
+    // Recover after an error screen
+    if (self.displayNeedsClearingPrior) {
+        [self clearPressed];
+        self.displayNeedsClearingPrior = NO;
+    }
 }
 
 @end

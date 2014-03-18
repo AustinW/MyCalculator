@@ -92,7 +92,7 @@ static CalculatorEngine* _mainEngine;
                 if ([y isEqualToValue:@0])
                     [NSException raise:@"Division by zero" format:@"Cannot divide numbers by zero"];
                 else
-                    [tempStack pushObject:[x decimalNumberByDividingBy:y]];
+                    [tempStack pushObject:[y decimalNumberByDividingBy:x]];
             } else {
                 [NSException raise:@"Invalid argument exception" format:@"Unrecognized operator"];
             }
